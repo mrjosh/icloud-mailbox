@@ -33,6 +33,10 @@ spec:
           - "server"
           - "--config-file"
           - "/configs/server.yml"
+          - "--host"
+          - "0.0.0.0"
+          - "--port"
+          - "8937"
         ports:
         - name: http
           containerPort: 8937
