@@ -4,6 +4,7 @@ metadata:
   name: {{ .Release.Name }}-confmap
 data:
   server.yml: |
+    environment: {{ .Values.env }}
     auth:
       secret_id: {{ .Values.server.config.auth.secret_id }}
     smtp:

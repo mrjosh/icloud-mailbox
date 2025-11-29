@@ -86,6 +86,9 @@ func (s *ServerCommand) cmd() *cobra.Command {
 
 				req := new(smtp.Notification)
 				if err := ctx.Bind(&req); err != nil {
+					if conf.Environment == "debug" {
+						logger.Error(err)
+					}
 					return ctx.JSON(http.StatusInternalServerError, map[string]any{
 						"success": false,
 						"message": "ctx.Bind.Failed",
@@ -93,6 +96,9 @@ func (s *ServerCommand) cmd() *cobra.Command {
 				}
 
 				if err := smtpClient.Send(ctx.Request().Context(), *req); err != nil {
+					if conf.Environment == "debug" {
+						logger.Error(err)
+					}
 					return ctx.JSON(http.StatusInternalServerError, map[string]any{
 						"success": false,
 						"message": "smtpClient.Send.Failed",
