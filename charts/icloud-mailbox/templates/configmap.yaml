@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-confmap
+data:
+  server.yml: |
+    auth:
+      secret_id: {{ .Values.server.config.auth.secret_id }}
+    smtp:
+      host: {{ .Values.server.config.smtp.host }}
+      port: {{ .Values.server.config.smtp.port }}
+      user: {{ .Values.server.config.smtp.user }}
+      pass: {{ .Values.server.config.smtp.pass }}
+      from: {{ .Values.server.config.smtp.from }}
+      name: {{ .Values.server.config.smtp.name }}

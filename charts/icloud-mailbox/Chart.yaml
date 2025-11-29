@@ -1,0 +1,12 @@
+apiVersion: v2
+appVersion: 0.0.1
+name: icloud-mailbox
+version: 0.0.1
+description: A helm chart for icloud's mailbox go server
+home: https://github.com/mrjosh/icloud-mailbox
+maintainers:
+- name: Josh
+  url: https://github.com/mrjosh
+sources:
+- https://github.com/mrjosh/icloud-mailbox
+type: application

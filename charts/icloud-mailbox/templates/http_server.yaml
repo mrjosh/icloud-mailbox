@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-http-server
+  labels:
+    app: {{ .Release.Name }}-http-server
+    group: icloud-mailbox-http-server
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-http-server
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+        releaseTime: {{ dateInZone "2006-01-02 15:04:05Z" (now) "UTC"| quote }}
+      labels:
+        app: {{ .Release.Name }}-http-server
+    spec:
+      restartPolicy: Always
+      serviceAccountName: {{ .Release.Name }}-sa
+      containers:
+      - name: main
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        args:
+          - "server"
+          - "--config-file"
+          - "/configs/server.yml"
+        ports:
+        - name: http
+          containerPort: 8000
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+        volumeMounts:
+        - name: configs
+          mountPath: "/configs"
+          readOnly: true
+      {{- if $.Values.securityContext }}
+      securityContext:
+        {{- $.Values.securityContext | nindent 8 }}
+      {{- end }}
+      {{- if $.Values.tolerations }}
+      tolerations:
+        {{- toYaml $.Values.tolerations | nindent 8 }}
+      {{- end }}
+      volumes:
+      - name: configs
+        configMap:
+          name: {{ .Release.Name }}-confmap

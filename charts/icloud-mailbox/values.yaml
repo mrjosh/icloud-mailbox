@@ -1,0 +1,26 @@
+name: "sample"
+env: "dev"
+replicaCount: 1
+
+service:
+  type: ClusterIP
+
+image:
+  repository: ghcr.io/mrjosh/icloud-mailbox
+  pullPolicy: Always
+  tag: main
+
+server:
+  config:
+    auth:
+      secret_id: super-secure-secret-id
+    smtp:
+      host: smtp.mail.me.com
+      port: 587
+      user: ""
+      pass: ""
+      from: ""
+      name: no-reply Example Inc.
+
+resources: {}
+tolerations: {}
