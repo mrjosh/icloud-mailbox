@@ -1,0 +1,9 @@
+auth:
+  secret_id: 
+
+smtp:
+  host: smtp.mail.me.com
+  port: 587
+  user: 
+  pass: 
+  from: no-reply@example.com
